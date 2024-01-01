@@ -1,0 +1,14 @@
+//@version=5
+indicator("ii（連続する孕み足パターン）", overlay=true)
+
+// 連続する孕み足パターンの条件
+isIIPattern = close[1] > open[1] and close > open and open < close[1]
+
+// 一致率の計算
+matchingPercentage = isIIPattern ? 100 : 0
+
+// チャートにiiパターンをプロット
+plotshape(series=isIIPattern, title="ii", color=color.orange, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.orange, style=label.style_label_up)
