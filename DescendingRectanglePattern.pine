@@ -1,0 +1,36 @@
+//@version=5
+indicator("下降ボックス（長方形）型", overlay=true)
+
+class ChartPattern:
+    float matchingPercentage = na
+    
+    constructor() =>
+        matchingPercentage := na
+    
+    method setMatchingPercentage(value) =>
+        matchingPercentage := value
+
+    method plotPattern() =>
+        plotshape(series=matchingPercentage, title="一致率", color=color.green, style=shape.triangleup, size=size.small)
+
+class DescendingRectangle extends ChartPattern:
+    method detectPattern() =>
+        // 下降ボックス（長方形）型の条件
+        high1 = request.security(syminfo.tickerid, "D", high[1]) // 前日の高値
+        low1 = request.security(syminfo.tickerid, "D", low[1])   // 前日の安値
+        high2 = request.security(syminfo.tickerid, "D", high[2]) // 2日前の高値
+        low2 = request.security(syminfo.tickerid, "D", low[2])   // 2日前の安値
+        high3 = request.security(syminfo.tickerid, "D", high[3]) // 3日前の高値
+        low3 = request.security(syminfo.tickerid, "D", low[3])   // 3日前の安値
+
+        // 下降ボックス（長方形）型の全体の条件
+        high == high1 and high == high2 and high == high3 and low == low1 and low == low2 and low == low3
+
+// チャートパターンのインスタンスを作成
+var DescendingRectanglePattern = DescendingRectangle()
+
+// パターンの検出と一致率の設定
+DescendingRectanglePattern.detectPattern() ? DescendingRectanglePattern.setMatchingPercentage(100) : na
+
+// パターンのプロット
+DescendingRectanglePattern.plotPattern()
