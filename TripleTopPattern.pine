@@ -1,0 +1,35 @@
+//@version=5
+indicator("トリプル・トップ", overlay=true)
+
+class ChartPattern:
+    float matchingPercentage = na
+    
+    constructor() =>
+        matchingPercentage := na
+    
+    method setMatchingPercentage(value) =>
+        matchingPercentage := value
+
+    method plotPattern() =>
+        plotshape(series=matchingPercentage, title="一致率", color=color.green, style=shape.triangleup, size=size.small)
+
+class TripleTop extends ChartPattern:
+    method detectPattern() =>
+        // トリプル・トップの条件
+        high1 = request.security(syminfo.tickerid, "D", high[1]) // 前日の高値
+        low1 = request.security(syminfo.tickerid, "D", low[1])   // 前日の安値
+        top1 = high > high1 and low > low1                      // 1つ目のトップの条件
+        top2 = high[2] > high1 and low[2] > low1                // 2つ目のトップの条件
+        top3 = high[3] > high1 and low[3] > low1                // 3つ目のトップの条件
+
+        // トリプル・トップの全体の条件
+        top1 and top2 and top3
+
+// チャートパターンのインスタンスを作成
+var TripleTopPattern = TripleTop()
+
+// パターンの検出と一致率の設定
+TripleTopPattern.detectPattern() ? TripleTopPattern.setMatchingPercentage(100) : na
+
+// パターンのプロット
+TripleTopPattern.plotPattern()
