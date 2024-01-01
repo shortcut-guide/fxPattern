@@ -1,0 +1,35 @@
+//@version=5
+indicator("ヘッド・アンド・ショルダー・トップ", overlay=true)
+
+class ChartPattern:
+    float matchingPercentage = na
+    
+    constructor() =>
+        matchingPercentage := na
+    
+    method setMatchingPercentage(value) =>
+        matchingPercentage := value
+
+    method plotPattern() =>
+        plotshape(series=matchingPercentage, title="一致率", color=color.green, style=shape.triangleup, size=size.small)
+
+class HeadAndShouldersTop extends ChartPattern:
+    method detectPattern() =>
+        // ヘッド・アンド・ショルダー・トップの条件
+        high1 = security(syminfo.tickerid, "D", high[1]) // 前日の高値
+        low1 = security(syminfo.tickerid, "D", low[1])   // 前日の安値
+        head = high > high1 and low > low1                // ヘッドの条件
+        leftShoulder = high1 > high[2] and low1 > low[2]   // 左肩の条件
+        rightShoulder = high > high[2] and low > low[2]    // 右肩の条件
+
+        // ヘッド・アンド・ショルダー・トップの全体の条件
+        head and leftShoulder and rightShoulder
+
+// チャートパターンのインスタンスを作成
+var HeadAndShouldersTopPattern = HeadAndShouldersTop()
+
+// パターンの検出と一致率の設定
+HeadAndShouldersTopPattern.detectPattern() ? HeadAndShouldersTopPattern.setMatchingPercentage(100) : na
+
+// パターンのプロット
+HeadAndShouldersTopPattern.plotPattern()
