@@ -1,0 +1,14 @@
+//@version=5
+indicator("ミクロダブルボトムパターン", overlay=true)
+
+// ミクロダブルボトムパターンの条件（簡略化した例）
+isMicroDoubleBottom = low[1] < low[2] and low[1] < low and high[1] < high[2] and high[1] < high
+
+// 一致率の計算
+matchingPercentage = isMicroDoubleBottom ? 100 : 0
+
+// チャートにミクロダブルボトムパターンをプロット
+plotshape(series=isMicroDoubleBottom, title="ミクロダブルボトム", color=color.green, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.blue, style=label.style_label_up)
