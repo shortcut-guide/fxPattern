@@ -1,0 +1,14 @@
+//@version=5
+indicator("高値1、2、3、4パターン", overlay=true)
+
+// 高値1、2、3、4パターンの条件
+isHighPattern = high[1] > high[2] and high[2] > high[3] and high[3] > high[4]
+
+// 一致率の計算
+matchingPercentage = isHighPattern ? 100 : 0
+
+// チャートに高値1、2、3、4パターンをプロット
+plotshape(series=isHighPattern, title="高値1、2、3、4", color=color.green, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.green, style=label.style_label_up)
