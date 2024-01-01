@@ -1,0 +1,11 @@
+//@version=5
+indicator("ハンマーダマシアラート", overlay=true)
+
+// ハンマーキャンドルの条件
+isHammer = close > open and open - low > 2 * (close - open) and close - low > 0.6 * (high - low)
+
+// アラートを設定
+alertcondition(isHammer, title="ハンマーが検出されました", message="ハンマーが発生しましたが、ダマシの可能性があります。")
+
+// チャートにハンマーキャンドルをプロット
+plotshape(isHammer, title="ハンマー", color=color.green, style=shape.triangleup, size=size.small)
