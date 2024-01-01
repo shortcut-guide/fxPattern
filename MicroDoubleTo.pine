@@ -1,0 +1,14 @@
+//@version=5
+indicator("ミクロダブルトップパターン", overlay=true)
+
+// ミクロダブルトップパターンの条件（簡略化した例）
+isMicroDoubleTop = high[1] > high[2] and high[1] > high and low[1] > low[2] and low[1] > low
+
+// 一致率の計算
+matchingPercentage = isMicroDoubleTop ? 100 : 0
+
+// チャートにミクロダブルトップパターンをプロット
+plotshape(series=isMicroDoubleTop, title="ミクロダブルトップ", color=color.red, style=shape.triangledown, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.blue, style=label.style_label_down)
