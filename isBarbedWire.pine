@@ -1,0 +1,8 @@
+//@version=5
+indicator("バーブワイヤーパターンの検出", overlay=true)
+
+// バーブワイヤーパターンの条件（一般的な特徴を考慮）
+isBarbedWire = low > close[1] and low > open[1] and close > open and close - low > 2 * (open - low) and close - low > 0.6 * (high - low)
+
+// チャートにバーブワイヤーパターンをプロット
+plotshape(series=isBarbedWire, title="バーブワイヤー", color=color.green, style=shape.triangleup, size=size.small)
