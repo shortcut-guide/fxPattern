@@ -1,0 +1,8 @@
+//@version=5
+indicator("ピンバーの検出", overlay=true)
+
+// ピンバーの条件
+isPinbar = low > open and low > close and close - low > 2 * (open - low) and close - low > 0.6 * (high - low)
+
+// チャートにピンバーをプロット
+plotshape(series=isPinbar, title="ピンバー", color=color.red, style=shape.triangledown, size=size.small)
