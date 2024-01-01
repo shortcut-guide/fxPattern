@@ -1,0 +1,14 @@
+//@version=5
+indicator("安値1、2、3、4パターン", overlay=true)
+
+// 安値1、2、3、4パターンの条件
+isLowPattern = low[1] < low[2] and low[2] < low[3] and low[3] < low[4]
+
+// 一致率の計算
+matchingPercentage = isLowPattern ? 100 : 0
+
+// チャートに安値1、2、3、4パターンをプロット
+plotshape(series=isLowPattern, title="安値1、2、3、4", color=color.red, style=shape.triangledown, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, high, text="一致率: " + tostring(matchingPercentage) + "%", color=color.red, style=label.style_label_down)
