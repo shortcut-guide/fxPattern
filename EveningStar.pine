@@ -1,0 +1,14 @@
+//@version=5
+indicator("宵の明星", overlay=true)
+
+// 宵の明星パターンの条件
+isEveningStar = close[1] > close[2] and close[1] > open[2] and close[2] > open[2] and close[2] < open[1] and close[3] > open[3] and close[3] > open[2] and close[3] < open[1] and close > open and open < close[1] and close > open[2] and close > open[3] and close > (open[1] + close[1]) / 2
+
+// 一致率の計算
+matchingPercentage = isEveningStar ? 100 : 0
+
+// チャートに宵の明星パターンをプロット
+plotshape(series=isEveningStar, title="宵の明星", color=color.blue, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.blue, style=label.style_label_up)
