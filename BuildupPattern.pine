@@ -1,0 +1,14 @@
+//@version=5
+indicator("ビルドアップ", overlay=true)
+
+// ビルドアップパターンの条件
+isBuildupPattern = high - low <= atr(14) and high[1] - low[1] <= atr(14) and high[2] - low[2] <= atr(14)
+
+// 一致率の計算
+matchingPercentage = isBuildupPattern ? 100 : 0
+
+// チャートにビルドアップパターンをプロット
+plotshape(series=isBuildupPattern, title="ビルドアップ", color=color.yellow, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.yellow, style=label.style_label_up)
