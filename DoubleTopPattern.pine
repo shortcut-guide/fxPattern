@@ -1,0 +1,34 @@
+//@version=5
+indicator("ダブル・トップ", overlay=true)
+
+class ChartPattern:
+    float matchingPercentage = na
+    
+    constructor() =>
+        matchingPercentage := na
+    
+    method setMatchingPercentage(value) =>
+        matchingPercentage := value
+
+    method plotPattern() =>
+        plotshape(series=matchingPercentage, title="一致率", color=color.green, style=shape.triangleup, size=size.small)
+
+class DoubleTop extends ChartPattern:
+    method detectPattern() =>
+        // ダブル・トップの条件
+        high1 = security(syminfo.tickerid, "D", high[1]) // 前日の高値
+        low1 = security(syminfo.tickerid, "D", low[1])   // 前日の安値
+        top1 = high > high1 and low > low1                // 1つ目のトップの条件
+        top2 = high[2] > high1 and low[2] > low1          // 2つ目のトップの条件
+
+        // ダブル・トップの全体の条件
+        top1 and top2
+
+// チャートパターンのインスタンスを作成
+var DoubleTopPattern = DoubleTop()
+
+// パターンの検出と一致率の設定
+DoubleTopPattern.detectPattern() ? DoubleTopPattern.setMatchingPercentage(100) : na
+
+// パターンのプロット
+DoubleTopPattern.plotPattern()
