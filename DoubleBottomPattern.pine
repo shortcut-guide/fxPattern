@@ -1,0 +1,34 @@
+//@version=5
+indicator("ダブル・ボトム", overlay=true)
+
+class ChartPattern:
+    float matchingPercentage = na
+    
+    constructor() =>
+        matchingPercentage := na
+    
+    method setMatchingPercentage(value) =>
+        matchingPercentage := value
+
+    method plotPattern() =>
+        plotshape(series=matchingPercentage, title="一致率", color=color.green, style=shape.triangleup, size=size.small)
+
+class DoubleBottom extends ChartPattern:
+    method detectPattern() =>
+        // ダブル・ボトムの条件
+        low1 = request.security(syminfo.tickerid, "D", low[1])   // 前日の安値
+        high1 = request.security(syminfo.tickerid, "D", high[1]) // 前日の高値
+        bottom1 = low < low1 and high < high1                // 1つ目のボトムの条件
+        bottom2 = low[2] < low1 and high[2] < high1          // 2つ目のボトムの条件
+
+        // ダブル・ボトムの全体の条件
+        bottom1 and bottom2
+
+// チャートパターンのインスタンスを作成
+var DoubleBottomPattern = DoubleBottom()
+
+// パターンの検出と一致率の設定
+DoubleBottomPattern.detectPattern() ? DoubleBottomPattern.setMatchingPercentage(100) : na
+
+// パターンのプロット
+DoubleBottomPattern.plotPattern()
