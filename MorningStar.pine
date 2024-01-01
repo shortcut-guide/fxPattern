@@ -1,0 +1,14 @@
+//@version=5
+indicator("明けの明星", overlay=true)
+
+// 明けの明星パターンの条件
+isMorningStar = close[1] < open[1] and close[1] < close[2] and close[1] > open[2] and close[2] > open[2] and close[2] < open[1] and close[3] < open[3] and close[3] < close[2] and close[3] > open[1] and close < open and open > close[1] and open < close[2] and open < close[3] and open < (close[1] + open[1]) / 2
+
+// 一致率の計算
+matchingPercentage = isMorningStar ? 100 : 0
+
+// チャートに明けの明星パターンをプロット
+plotshape(series=isMorningStar, title="明けの明星", color=color.red, style=shape.triangledown, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, high, text="一致率: " + tostring(matchingPercentage) + "%", color=color.red, style=label.style_label_down)
