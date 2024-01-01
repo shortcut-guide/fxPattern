@@ -1,0 +1,14 @@
+//@version=5
+indicator("oio（包み足→孕み足→包み足）", overlay=true)
+
+// oioパターンの条件
+isOioPattern = close[1] > open[1] and close[2] > open[2] and close[2] > close[1] and open[2] < close[1] and close > open and open < close[2] and close > open[2]
+
+// 一致率の計算
+matchingPercentage = isOioPattern ? 100 : 0
+
+// チャートにoioパターンをプロット
+plotshape(series=isOioPattern, title="oio", color=color.purple, style=shape.triangleup, size=size.small)
+
+// 一致率を表示
+label.new(bar_index, low, text="一致率: " + tostring(matchingPercentage) + "%", color=color.purple, style=label.style_label_up)
